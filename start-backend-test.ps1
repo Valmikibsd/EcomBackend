@@ -8,7 +8,7 @@
 $ErrorActionPreference = "Stop"
 $root = $PSScriptRoot
 
-function Start-Service {
+function Start-ServiceInstance {
     param(
         [string]$Name,
         [string]$ProjectPath,
@@ -18,31 +18,31 @@ function Start-Service {
     Start-Process powershell -ArgumentList @(
         "-NoExit",
         "-Command",
-        "Set-Location '$ProjectPath'; `$env:ASPNETCORE_ENVIRONMENT='Test'; dotnet run --launch-profile Test --no-build 2>&1"
+        "Set-Location '$ProjectPath'; `$env:ASPNETCORE_ENVIRONMENT='Test'; dotnet run --launch-profile Test --no-build"
     ) -WindowStyle Normal
 }
 
 Write-Host ""
 Write-Host "======================================================" -ForegroundColor Yellow
-Write-Host "  AURA MART — TEST Environment Startup" -ForegroundColor Yellow
+Write-Host "  AURA MART - TEST Environment Startup" -ForegroundColor Yellow
 Write-Host "======================================================" -ForegroundColor Yellow
 Write-Host ""
 Write-Host "Building solution first ..." -ForegroundColor Gray
 dotnet build "$root\EcomSolution.sln" -c Debug --nologo -v q
 if ($LASTEXITCODE -ne 0) {
-    Write-Host "Build failed — aborting." -ForegroundColor Red
+    Write-Host "Build failed - aborting." -ForegroundColor Red
     exit 1
 }
 Write-Host "Build succeeded." -ForegroundColor Green
 Write-Host ""
 
-Start-Service "Auth.Api     (TEST)" "$root\src\Services\Auth\Auth.Api"     6001
+Start-ServiceInstance "Auth.Api     (TEST)" "$root\src\Services\Auth\Auth.Api"     6001
 Start-Sleep -Seconds 1
-Start-Service "Product.Api  (TEST)" "$root\src\Services\Product\Product.Api" 6002
+Start-ServiceInstance "Product.Api  (TEST)" "$root\src\Services\Product\Product.Api" 6002
 Start-Sleep -Seconds 1
-Start-Service "Order.Api    (TEST)" "$root\src\Services\Order\Order.Api"    6003
+Start-ServiceInstance "Order.Api    (TEST)" "$root\src\Services\Order\Order.Api"    6003
 Start-Sleep -Seconds 1
-Start-Service "ApiGateway   (TEST)" "$root\src\Gateways\ApiGateway"         6173
+Start-ServiceInstance "ApiGateway   (TEST)" "$root\src\Gateways\ApiGateway"         6173
 
 Write-Host ""
 Write-Host "======================================================" -ForegroundColor Green
