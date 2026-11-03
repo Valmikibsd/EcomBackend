@@ -24,6 +24,11 @@ try
     // ── CORS ──────────────────────────────────────────────────────────────────
     builder.Services.AddCors(options =>
     {
+        options.AddDefaultPolicy(policy =>
+            policy.SetIsOriginAllowed(_ => true)
+                  .AllowAnyHeader()
+                  .AllowAnyMethod()
+                  .AllowCredentials());
         options.AddPolicy("AllowAngular", policy =>
             policy.SetIsOriginAllowed(_ => true)
                   .AllowAnyHeader()
