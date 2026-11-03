@@ -17,6 +17,12 @@ try
 
     var builder = WebApplication.CreateBuilder(args);
 
+    builder.Configuration
+        .SetBasePath(AppContext.BaseDirectory)
+        .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+        .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+        .AddEnvironmentVariables();
+
     // ── Serilog: replace default logging ─────────────────────────────────────
     builder.Host.UseSerilog((ctx, services, cfg) => cfg
         .ReadFrom.Configuration(ctx.Configuration)

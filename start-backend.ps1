@@ -20,10 +20,10 @@ function Start-ServiceInstance {
         [int]$Port
     )
     Write-Host "  Starting $Name on port $Port ..." -ForegroundColor Cyan
-    Start-Process powershell -ArgumentList @(
+    Start-Process powershell -WorkingDirectory "$ProjectPath" -ArgumentList @(
         "-NoExit",
         "-Command",
-        "Set-Location '$ProjectPath'; dotnet run --launch-profile http --no-build"
+        "dotnet run --launch-profile http"
     ) -WindowStyle Normal
 }
 
