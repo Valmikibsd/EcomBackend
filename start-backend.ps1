@@ -7,6 +7,12 @@
 $ErrorActionPreference = "Stop"
 $root = $PSScriptRoot
 
+# Stop any existing/orphan instances first so ports are 100% free
+$servicesToStop = @("Auth.Api", "Product.Api", "Order.Api", "ApiGateway")
+foreach ($name in $servicesToStop) {
+    Stop-Process -Name $name -Force -ErrorAction SilentlyContinue
+}
+
 function Start-ServiceInstance {
     param(
         [string]$Name,

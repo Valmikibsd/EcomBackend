@@ -67,6 +67,13 @@ try
 }
 catch (Exception ex)
 {
+    Console.ForegroundColor = ConsoleColor.Red;
+    Console.WriteLine($"\n[FATAL ERROR in ApiGateway]: {ex.Message}");
+    if (ex.InnerException != null)
+    {
+        Console.WriteLine($"[Inner Exception]: {ex.InnerException.Message}");
+    }
+    Console.ResetColor();
     Log.Fatal(ex, "ApiGateway terminated unexpectedly");
 }
 finally
